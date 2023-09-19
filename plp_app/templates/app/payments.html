@@ -1,0 +1,132 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+{% load static %}
+
+
+<style>
+
+    .pretty{
+        font-weight: bolder;
+        color: rgb(13, 64, 105);  
+    }
+
+    .table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 1.2em;
+        min-width: 70vw;
+    }
+
+    .table thead tr, .table tfoot tr{
+        background-color: #0f8775;
+        text-align: left;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #0f8775;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: flex-start;
+    }
+
+    .payment-methods{
+        padding: 20px;
+        background-color: #96dae7;
+        color:white;
+        min-width: 20vw;
+    }
+
+    p {
+        border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+        padding: 5px;
+
+    }
+
+    .add{
+        float: right;
+        border:0;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .card{
+        width: 30px;
+       margin-right: 10px;
+        
+    }
+
+    .edit{
+        width:27px;
+        float: right;
+    }
+
+</style>
+
+    
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
+<div class="container">
+    <div>
+        <h2>History of Payments</h2>
+        {% if not enrolledCourses %}
+            <p>You need to apply in a course to have an history of payments!</p>
+        {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Course Price</th>
+                    <th>Card Used</th>
+                </tr>
+            </thead>
+            {% for enrolledCourse in enrolledCourses %}
+            <tbody>
+                <tr>
+                    <td><a class="pretty" href="../course/{{ enrolledCourse.courseId.id }}">{{ enrolledCourse.courseId.name }}</a></td>
+                    <td>{{ enrolledCourse.courseId.price }}€</td>
+                    {% if enrolledCourse.paymentMethod.cardNumber %}
+                    <td>{{ enrolledCourse.paymentMethod.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1'}}</td>
+                    {% else %}
+                    <td>None</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+            {% endfor %}
+            <tfoot>
+                <tr>
+                    <td >Total</td>
+                    <td>{{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        {% endif %}
+    </div>
+
+    <div>
+        <h2>Payment Details</h2>
+        <div class="payment-methods">
+            <a href="../managePaymentDetails"><img class="edit" src="{% static 'images/' %}edit.png"></a>
+            {% if not paymentDetails %}
+                <p>No Payment Details</p>
+            {% else %}
+                {% for card in paymentDetails %}
+                <div>
+                    <p><img class="card" src="{% static 'images/' %}card.png"> {{ card.cardNumber|slice:'::-1'|truncatechars:5|slice:'::-1' }}</p>
+                </div>
+                
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

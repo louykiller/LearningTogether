@@ -1,0 +1,98 @@
+{% extends 'app/base.html' %}
+{% block content %}
+ {%load static%}
+
+<style>
+
+    body{
+      background-color: rgba(13, 64, 105, 0.569) ;
+    }
+
+    .divAdmin{
+      margin:150px;
+      display: flex;
+      align-items: center;
+      justify-content: center; 
+
+    }
+
+    
+    .sectionAdmin {
+        background-color:rgb(13, 64, 105) ;
+        width: 700px;
+        height: fit-content;
+        padding: 100px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    h1{
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: xx-large;
+      color:white;
+    }
+
+    .option{
+      text-decoration: none;
+      color: rgb(13, 64, 105);
+    }
+
+    .btn{
+          width: 100%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          padding: 10px 40px;
+          border: 0;
+          text-align: center;
+          
+          cursor: pointer;
+        }
+
+    .btn:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #636564 0 -3px 0 inset;
+            transform: translateY(-2px);
+            transition: all 0.3s;
+            
+
+    }
+
+    .lock{
+      width: 35px;
+    }
+
+    .private{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+</style>
+
+
+{% csrf_token %}
+
+{%if user.is_authenticated%} 
+  {% include 'app/navBar.html'%} 
+{%endif%}
+
+<div class="divAdmin">
+  <section class="sectionAdmin">
+    <div class="private">
+      <img class="lock" src="{% static 'images/' %}lock.png">
+      <h1 >Admin Dashboard</h1>
+    </div>
+    
+    <div class="buttons">
+
+    
+    <button class="btn"><a class="option" style="color:#159b85;" href="addUser" type="button" , id="addUser">Create new user</a></button><br /><br /><br />
+    <button class="btn"><a class="option" style="color:rgb(185, 6, 6)" href="deleteUser" type="button" , id="deleteUser">Delete user</a></button><br /><br /><br />
+    <button class="btn"><a class="option" href="../admin" type="button" , id="admin">Django Admin Panel</a></button>
+  </div>
+  </section>
+</div>
+
+{% endblock %}

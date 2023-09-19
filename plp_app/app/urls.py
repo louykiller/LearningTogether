@@ -1,0 +1,48 @@
+from django.urls import path
+from . import views, admin_views
+
+urlpatterns = [
+    path('', views.home, name="home"),
+    path('register', views.register, name="register"),
+    path('loginpage', views.loginpage, name="loginpage"),
+    path('signout', views.signout, name="signout"),
+    path('course/<id>', views.coursePage, name='coursePage'),
+    path('viewProfile/<id>', views.viewProfile, name='viewProfile'),
+    path('searchResults', views.searchResults, name='searchResults'),
+    path('teachingUnit/<id>', views.teachingUnitPage, name='teachingUnitPage'),
+    path('chat',views.chat_on,name="chat online"),
+    path('own_course',views.own_course_page,name="course"),
+    path('course_def',views.course_def,name="Definitions"),
+    path('live_chat_def/<id>',views.def_chat,name="Chat definitions"),
+    path('saveChatDef',views.saveChatDef,name="saveChatDef"),    
+    path('courseCreated/<id>',views.courseCreated,name="courseCreated"),
+    path('createNewCourse',views.createNewCourse,name="createNewCourse"),
+    path('saveNewCourse',views.saveNewCourse,name="saveNewCourse"),
+    path('coursesEnrolled',views.coursesEnrolled,name="coursesEnrolled"),
+    path('editCourse/<id>',views.editCourse,name="editCourse"),
+    path('deleteCourse',views.deleteCourse,name="deleteCourse"),
+    path('saveCourseChanges',views.saveCourseChanges,name="saveCourseChanges"),
+    path('enrollCourse/<id>',views.enrollCourse,name="enrollCourse"),
+    path('saveEnrollment',views.saveEnrollment,name="saveEnrollment"),
+    path('rateCourse/<id>',views.rateCourse,name="rateCourse"),
+    path('saveRating',views.saveRating,name="saveRating"),
+    path('payments',views.payments,name="payments"),
+    path('addTeachingUnitWritten/<id>',views.addTeachingUnitWritten,name="addTUW"),
+    path('addTeachingUnitVideo/<id>',views.addTeachingUnitVideo,name="addTUV"),
+    path('editProfile',views.editProfile,name="editProfile"),
+    path('saveProfileChanges',views.saveProfileChanges,name="saveProfileChanges"),
+    path('managePaymentDetails',views.managePaymentDetails,name="managePaymentDetails"),
+    path('saveNewPaymentDetail',views.saveNewPaymentDetail,name="saveNewPaymentDetail"),
+    path('deletePaymentDetail',views.deletePaymentDetail,name="deletePaymentDetail"),
+    path('addTeachingUnit/<id>',views.addTeachingUnit,name="addTU"),
+    path('adminDashboard', admin_views.adminDashboard, name="adminDashboard"),
+    path('addUser',admin_views.addUser,name="addUser"),
+    path('deleteUser',admin_views.deleteUser, name="deleteUser"),
+    path('adminSaveCourseChanges',admin_views.adminSaveCourseChanges, name="adminSaveCourseChanges"),
+    path('addTeachingUnitImage/<id>',views.addTeachingUnitImage,name="addTUI"),
+    path('addTeachingUnitAudio/<id>',views.addTeachingUnitAudio,name="addTUA"),
+    path('deleteTeachingUnit',views.deleteTeachingUnit,name="deleteTeachingUnit"),
+    path('removeMaterial/<id>',views.removeMaterial,name="remM")
+    
+
+]

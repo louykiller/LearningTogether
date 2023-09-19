@@ -1,0 +1,152 @@
+{% extends 'app/base.html' %}
+{% block content %}
+{% load static %}
+    <style>
+
+        .avatar{
+            position: relative;
+            top: 60px;
+            left: 30px;
+            width: 60%;
+        }
+        
+        h2{
+            position: absolute;
+            left:20px;
+            color:#129f8a;
+            font-weight: bolder;
+        }
+
+        .cat{
+            border:2px solid #129f8a;
+            border-radius: 20px;
+            position: absolute;
+            left: 35px;
+            width: 1000px;
+            
+        }
+        .name{
+            font-size:xx-large;
+            font-weight: bold;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .username{
+            position:absolute; 
+            top:320px; 
+            font-size:large;
+            color:rgba(0, 0, 0, 0.547);
+            font-display:inherit;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            left: 360px;
+        }
+
+        .nStudents{
+            position:absolute; 
+            top:400px; 
+            font-size:medium;
+            color:rgba(0, 0, 0, 0.477);
+            font-display:inherit;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            left: 360px;
+        }
+
+        .rating{
+            position:absolute; 
+            top:360px; 
+            font-size:medium;
+            font-weight: bold;
+            color:rgba(0, 0, 0, 0.477);
+            font-display:inherit;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            left: 390px;
+        }
+
+
+
+        .star{
+            position:absolute; 
+            top:375px; 
+            width: 20px;
+            font-display:inherit;
+            left: 360px;
+        }
+
+        .email{
+            position: absolute;
+            top: 260px;
+            left: 360px;
+            color:rgba(0, 0, 0, 0.477);
+            font-size:medium;
+            font-weight: bold;
+        }
+
+        .editP{
+            text-decoration: none;
+        }
+
+        .btn{
+            font-size: 30px;
+            background-color: transparent;
+            border:0;
+            border-radius: 100%;
+            margin: 10px;
+        }
+
+        .btn:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0f9682 0 -3px 0 inset;
+            transform: translateY(-2px);
+        }
+
+        .edit{
+            width: 27px;
+        }
+
+        .editProfile{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position:absolute; 
+            top:200px; 
+            left: 360px;
+        }
+
+    </style>
+    
+        {% include 'app/navBar.html' with thisUser=thisUser userId=public.profileId.userId.id showOptions=showOptions %}
+
+
+            <p style="text-align:left; display: table-cell;"><img class="avatar" src="{% static 'images/' %}{{ public.avatar }}.png"></p>
+
+            <div class="editProfile">
+                <p class = "name"> {{ public.name }} {{ public.surname }}</p>
+                {% if thisUser %}
+                <button class="btn"><a class="editP" href="../editProfile"><img class="edit" src="{% static 'images/' %}edit.png"></a></button>
+                {% endif %}
+            </div>
+            
+            <p class="email" style="top:290px">Joined on {{ public.createdDate }}</p>
+            <p class="username">@{{ public.profileId.userId.username }}</p>
+            <p class="nStudents">Number of students: {{ students }}</p>
+            <p><img class="star" src="{% static 'images/' %}star.png"></p>
+            <p class="rating">{{ avgRating }} <b style="font-size:small;font-weight: 500;">({{ numRatings }} ratings)</b></p>
+
+            {% if thisUser %}
+                <br><br>
+                <br><br>
+                <p class="email">{{ private.email }}</p>
+                <div class="cat">
+                    <h2>Categories Liked</h2><br><br><br>
+                    <ul>
+                    {% for categoryLiked in categoriesLiked %}
+                        <li style="font-size:15px; padding:1px;">{{ categoryLiked.categoryId.category }}</li><br>
+                    {% endfor %}
+
+                    </ul>
+
+                </div>
+                
+                
+            {% endif %}
+        
+{% endblock %}

@@ -1,0 +1,76 @@
+{% load static %}
+<style>
+        .unList{
+            list-style: none;
+        }
+
+        .nave{
+            background-color: rgba(235, 235, 235, 0.851);
+            border-radius: 10%;
+            width: 350px ;
+            height: 60vh;
+            right: -350px;
+            position: fixed;
+            transition: all .5s ;  
+            
+        }
+
+        #check{
+            
+            display: none;
+        }
+        #check:checked ~ nav{
+            transform: translateX(-350px);
+        }
+
+        .unList{
+            right: 80px;
+            bottom: 100px;
+            position: absolute;
+            justify-content: center;
+            
+        }
+
+        .aMenu{
+            text-decoration: none;
+            font-size: 24px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            display: block; 
+            text-align: center;
+            padding: 15px 5px;  
+            color: #0f8775;
+        }
+        .aMenu:hover{
+            background-color:#4b9f92;
+            border-radius: 40%;
+            color: white;
+            transition: all 0.5s;
+        }
+        
+        .label{
+            padding: 15px;
+            position: absolute;
+            z-index: 1;
+        }   
+</style>
+
+{% csrf_token %}
+{% if user.is_authenticated %}
+<div style="z-index: 99;">
+    <input type= "checkbox" id="check" >
+    <label class="label" for="check">
+        <img src = "{% static 'images/menu2.png' %}" style="width: 60px; position:fixed; right:15px"  >
+    </label>
+
+    <nav class="nave">
+        <ul class="unList">
+            {% if user.is_staff %}
+            <li style="font-weight: bold;"> <a class="aMenu" href="../adminDashboard">Admin Dashboard</a></li>
+            {% endif %}
+            <li style="font-weight: bold;"> <a class="aMenu" href="../viewProfile/{{ user.id }}">Profile</a></li>
+            <li><a class="aMenu" href="../coursesEnrolled">Courses Enrolled</a></li>
+            <li> <a class="aMenu" href="/signout" style="font-weight: bold;color: rgb(166, 7, 7)" >Log Out</a></li>
+        </ul>
+    </nav>
+</div>
+{% endif %}

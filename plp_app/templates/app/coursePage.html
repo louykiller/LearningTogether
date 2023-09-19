@@ -1,0 +1,348 @@
+{% extends 'app/base.html' %} 
+{% block content %}
+
+{% load static %}
+
+<style>
+
+  .course-header {
+    background-color: rgb(13, 64, 105);
+    color: white;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20vh;
+  }
+ 
+  .live-chat{
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: white;
+    color: rgb(13, 64, 105);
+    text-align: center;
+  }
+
+  .course-body {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #96dae7;
+    align-items: flex-start;
+    height:fit-content;
+  }
+
+  .teaching-units{
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    width: 70%;
+    margin-right: 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+  }
+
+  .ratings{
+    padding: 20px;
+    padding-top: 0px;
+    background-color: white;
+    width: 30%;
+    border: 1px solid black;
+    border-radius: 15px;
+  }
+
+  .teachingUnit {
+    color: black;
+  }
+
+  a {
+    color: white;
+  }
+
+
+
+  .rating{
+    background-color: #0f8775;
+    opacity: 80%;
+    color: white;
+    padding:3px;
+    border-radius: 5px;
+    padding-left: 10px;
+    margin: 2px;
+    
+  }
+
+  .ratings-header {
+    display: flex;  
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  
+    .container{
+
+      background-color: #5eaa9f89;
+      max-width: 500px;
+      
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    .star{
+      width: 20px;
+    }
+
+    .add{
+      float: right;
+      margin: 20px;
+      border:0;
+      background-color: transparent;
+      cursor: pointer;
+  }
+
+
+  .btn{
+          width: 30%;
+          border-radius: 10px;
+          background-color: white ;
+          font-size:20px;
+          text-align: center;
+          padding: 10px 40px;
+          border: 0;
+          text-decoration: none;
+          color: #129f8a;
+          cursor: pointer;
+        }
+
+    .btn:hover{
+            box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0c7969 0 -3px 0 inset;
+            transform: translateY(-2px);
+            
+            color:#2fb39d
+
+    }
+
+    .course-description {
+      background-color: #089e88;
+      padding: 10px;
+      color:white;
+    }
+
+    .course-description p{
+      margin-left: 15px;
+    }
+
+    .addUnit{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .plusBtn{
+        border:0;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .plusImg{
+      margin: 0px;
+      width: 30px;
+
+    }
+
+    .editChat{
+      display:flex;
+      justify-content: center;
+    }
+
+    .teachingUnitDiv {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+    .btnG{
+        border: 2px solid rgb(205, 2, 2);
+        background-color: transparent;
+        border-radius: 50px; 
+        
+    }
+
+    .btnG:hover{
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,  rgb(140, 1, 1) 0 -3px 0 inset;
+            transform: translateY(-2px);
+    }
+</style>
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=creator.profileId.userId.id showOptions=showOptions %}
+<head>
+  <link rel="stylesheet" href="..\static\addtu.css">
+</head>
+
+<div class="course-header">
+
+<!-- Course Info -->
+  <div class="info">
+    <h2>{{ course.name }}</h2>
+    <h4>Course Time: ~{{ course.averageMasterTime }} mins</h4>
+    {% if course.price == 0%}
+      <h4>Cost: Free</h4>
+    {% else %}
+      <h4>Cost: {{ course.price }}€</h4>
+    {% endif %}
+  </div>
+
+  <!-- Edit Course -->
+{% if thisUser or isAdmin %}
+  <div>
+    <a class="btn" href="../editCourse/{{ course.id }}">Edit</a>
+  </div>
+  {% endif %}
+
+  <!-- Enroll Course -->
+  {% if not enrolled %}
+  <div>
+    <a  class="btn" href="../enrollCourse/{{ course.id }}">Enroll</a>
+  </div>
+  {% endif %}
+
+  <!-- Course Owner -->
+  <div>
+    <h2>Course Creator:</h2>
+    <h4><a href="../viewProfile/{{ creator.profileId.userId.id }}"> {{ creator.name}} {{ creator.surname }}</a></h4>
+  </div>
+
+  <!-- Category -->
+  <div>
+    <h2>Category:</h2>
+    <h4>{{ course.categoryId.category }}</h4>
+  </div>
+
+  <!-- Live Chat -->
+  <div class="live-chat">
+    <div class="editChat">
+      <h2>Live Chat</h2>
+      {% if thisUser %}
+        <a href="/live_chat_def/{{ course.id }}"><img style="width:30px;" src="{% static 'images/' %}edit.png"></a>
+      {% endif %}
+  </div>
+  {% if not thisUser %}
+    {% if chat_able == 1 and enrolled %}
+        <p>Chat available! Just click in the green icon</p>
+        <!--Start of Tawk.to Script-->
+        <script type="text/javascript">
+          var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+          (function(){
+          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+          s1.async=true;
+          s1.src='https://embed.tawk.to/639f42a9daff0e1306dd3cf4/1gkj1oq7r';
+          s1.charset='UTF-8';
+          s1.setAttribute('crossorigin','*');
+          s0.parentNode.insertBefore(s1,s0);
+          })();
+          </script>
+          <!--End of Tawk.to Script-->
+    {% else %}
+      {% if enrolled %}
+        <p>No Live Chat yet. Stay Tuned!</p>
+      {% else %}
+        <p>Enroll to have access!</p>
+      {% endif %}
+    {% endif %}
+  {% else %}
+    {% if chat_able == 0 %}
+      <p>Live chat is deactivate</p>
+    {% else %}
+      <button style="background-color: #96dae7; border:0; border-radius: 5px;"><a href="https://www.tawk.to/" ><img style="width: 30px; padding:5px" src="{% static 'images/' %}chat.png"></a></button>
+    {% endif %}
+  {% endif %}
+    
+    
+  </div>
+</div>
+
+<!-- Course Description -->
+{% if course.description %}
+<div class="course-description">
+  <h3>Description</h3>
+  <p>{{ course.description }}</p>
+</div>
+{% endif %}
+
+<div class="course-body">
+  <!-- Teaching Units -->
+  
+  <div class="teaching-units">
+    <div class="addUnit">
+      <h2>Teaching Units</h2>
+    {% if thisUser %}
+      <button class="plusBtn">
+        <a href="../addTeachingUnit/{{course.id}}"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
+      </button>
+    {% endif %}
+    
+    </div>
+    
+    {% if not teachingUnits %}
+      <p>No teaching units for now</p>
+    {% else %}
+    <ul>
+      {% for unit in teachingUnits %}
+      {% if enrolled and user.is_authenticated %}
+      <li>
+          <div class="teachingUnitDiv">
+          <a class="teachingUnit" href="../teachingUnit/{{ unit.id }}">{{ unit.name }}</a>
+          {% if thisUser %}
+          <form method="POST" action="../deleteTeachingUnit">
+            {% csrf_token %}
+              <input type="hidden" name="teachingUnitId" value="{{ unit.id }}">
+              <button id="deleteButton" class="btnG" type="submit" value="Delete"><img style="width:15px; padding:3px; margin-top: 1px;" src="{% static 'images/' %}garbage.png"></button>
+          </form>
+          {% endif %}
+          </div>
+        </li>
+        {% else %}
+        <li>{{ unit.name }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+  <!-- Ratings -->
+  <div class="ratings">
+    <div class="ratings-header">
+      <h2>Ratings</h2>
+    </div>
+
+    {% if enrolled and not thisUser%}
+    <div class="container">
+      {%include 'app/rateCourse.html'%}
+    </div>
+    {% endif %}
+
+    {% if not ratings %}
+      {% if not user.is_authenticated %}
+      {% elif not enrolled %}
+      <p>To rate this course you need to be enrolled!</p>
+      {% elif thisUser %}
+      <p>No ratings yet!</p>
+      {% else %}
+      <p>Be the first one to rate this course!</p>
+      {% endif %}
+    {% else %}
+      {% for rating in ratings %}
+      <div class="rating">
+        <p><b><a href="../viewProfile/{{ rating.userId.id }}">@{{ rating.userId.username }}</a> <img class= "star" src="{% static 'images/' %}star.png"> {{rating.rating }}</b><br><br>{{ rating.comment }}</p>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

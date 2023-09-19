@@ -1,0 +1,85 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+{% load static %}
+
+{% include 'app/header.html' %}
+
+<style>
+    body {
+        color: #1abc9c;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    img {
+        width: 7%;
+    }
+
+    .link {
+        margin: 3%;
+        text-decoration: none;
+        color: #1abc9c;
+    }
+    
+    .container {
+        display: flex;
+    }
+
+    .results {
+        width: 50%;
+        float: left;
+        padding: 20px;
+        margin: 5px;
+        border: 3px solid #1abc9c;
+        border-radius: 10px;
+    }
+
+</style>
+
+<h1>Search Results</h1>
+<div class="container">
+
+    <!-- Profiles -->
+    <div class="results" >
+    {% if not publics %}
+        <h3>No profiles found</h3>
+
+    {% else %}
+        <h3>Profiles Found</h3>
+
+        <ul>
+        {% for public, courseMade in data %}
+            <div class="result">
+                <li>
+                    
+                    <a class="link" href="../viewProfile/{{ public.profileId.userId.id }}"><img src="{% static 'images/' %}{{ public.avatar }}.png"> {{ public.name }} {{ public.surname }} - {{ courseMade }} courses</a> 
+                </li>  
+            </div>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+
+    <!-- Courses -->
+    <div class="results">
+    {% if not courses %}
+        <h3>No courses found</h3>
+
+    {% else %}
+        <h3>Courses Found</h3>
+
+        <ul>
+        {% for course in courses %}
+            <div class="result">
+                <li> <a class="link" href="../course/{{ course.id }}">{{ course.name }} - ({{ course.categoryId.category }}) {{ course.price }}€</a> </li>
+            </div>
+            <br>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

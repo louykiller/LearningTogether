@@ -1,0 +1,98 @@
+{% extends 'app/base.html' %}
+{% block content %}
+{% load static %}
+<style>
+    h2{
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    .plusImg{
+        width: 30px;
+
+    }
+
+    .button{
+        position: fixed;
+        top: 150px;
+        left: 20px;
+        border:0;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    
+    .pretty{
+        font-weight: bolder;
+        color: rgb(13, 64, 105);  
+    }
+
+    .table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 1.2em;
+        min-width: 99vw;
+    }
+
+    .table thead tr, .table tfoot tr{
+        background-color: #0f8775;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #0f8775;
+    }
+
+</style>
+
+{% include 'app/navBar.html' with thisUser=thisUser userId=userId showOptions=showOptions %}
+
+<!-- Add new Course button -->
+{% if thisUser %}
+    <a href="../createNewCourse" class="button"><img class="plusImg" src="{% static 'images/' %}plus.png"></a>
+    <br><br>
+    {% if not coursesMade %}
+        <h3 style="color:rgba(0, 0, 0, 0.623)"><b>To create a new Course click the plus sign!</b></h3>
+    {% endif %}
+{% endif %}
+{%if not thisUser and not coursesMade %}
+    <h3>0 courses created</h3>
+{% endif %}
+<!-- No Courses Made -->
+{% if coursesMade  %}
+<!-- Table with courses made -->
+    <table class="table">
+        <thead>
+            <th>Course</th>
+            <th>Category</th>
+            <th>Enrolled Students</th>
+            <th>Live Chat</th>
+            {% if thisUser %}
+                <th>Money Earned</th>
+            {% endif %}
+        </thead>
+        {% for courseMade, numStudents, liveChat, moneyEarned in data %}
+            <tbody>
+                <th><a class="pretty" href="../course/{{ courseMade.courseId.id }}">{{courseMade.courseId.name}}</a></th>
+                <th><b>{{ courseMade.courseId.categoryId.category }}</b></th>
+                <th>{{ numStudents }}</th>
+                {% if not liveChat or liveChat == 0%}
+                <th>No</th>
+                {% else %}
+                <th>Yes</th>
+                {% endif %}
+
+                {% if thisUser %}
+                <th>{{ moneyEarned }}€</th>
+                {% endif %}
+            </tbody>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% endblock %}

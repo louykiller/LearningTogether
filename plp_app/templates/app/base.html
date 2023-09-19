@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <link rel="stylesheet" href="/static/test.css" />
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Learning Together</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    {% block content %} {% endblock content %}
+    <!-- The code will be here -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% load sweetify %} {% sweetify %}
+  </body>
+</html>
